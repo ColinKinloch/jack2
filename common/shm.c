@@ -761,6 +761,7 @@ jack_create_registry (jack_shm_info_t *ri)
 
 	strncpy (registry_id, "/jack-shm-registry", sizeof (registry_id));
 
+        shm_unlink (registry_id);
 	if ((shm_fd = shm_open (registry_id, O_RDWR|O_CREAT, 0666)) < 0) {
 		int rc = errno;
 		jack_error ("Cannot create shm registry segment (%s)",
@@ -865,6 +866,7 @@ jack_shmalloc (const char *shm_name, jack_shmsize_t size, jack_shm_info_t* si)
 		goto unlock;
 	}
 
+        shm_unlink (name);
 	if ((shm_fd = shm_open (name, O_RDWR|O_CREAT, 0666)) < 0) {
 		jack_error ("Cannot create shm segment %s (%s)",
 			    name, strerror (errno));
